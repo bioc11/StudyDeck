@@ -1,17 +1,48 @@
+:root {
+    --bg: #f5f5f5;
+    --text: #222;
+    --card-bg: white;
+    --card-shadow: rgba(0, 0, 0, 0.06);
+    --header-bg: #6E00B3;
+    --search-bg: white;
+    --answer-text: #333; /* answer text color */
+}
+
+.dark {
+    --bg: #1e1e1e;
+    --text: #e2e2e2;
+    --card-bg: #2a2a2a;
+    --card-shadow: rgba(0, 0, 0, 0.4);
+    --header-bg: #6E00B3;
+    --search-bg: #333;
+    --answer-text: #e2e2e2; /* lighter for dark mode */
+}
+
+body, .card, header {
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background: #f5f5f5;
-    color: #222;
+    background: var(--bg);
+    color: var(--text);
 }
 
 header {
     padding: 20px;
-    background: #4c6ef5;
+    background: var(--header-bg);
     color: white;
     text-align: center;
     position: sticky;
     top: 0;
+}
+
+.top-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 header h1 {
@@ -20,12 +51,23 @@ header h1 {
 }
 
 #searchBox {
-    width: 80%;
+    width: 70%;
     max-width: 400px;
     padding: 10px;
     border-radius: 6px;
     border: none;
-    font-size: 16px;
+    background: var(--search-bg);
+    color: var(--text);
+}
+
+#themeToggle {
+    padding: 10px 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--search-bg);
+    color: var(--text);
 }
 
 #cardsContainer {
@@ -36,12 +78,11 @@ header h1 {
 }
 
 .card {
-    background: white;
+    background: var(--card-bg);
+    box-shadow: 0px 4px 10px var(--card-shadow);
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -57,7 +98,7 @@ header h1 {
 .card .answer {
     display: none;
     margin-top: 10px;
-    color: #333;
+    color: var(--answer-text);
 }
 
 .card.open .answer {

@@ -40,3 +40,23 @@ document.getElementById("searchBox").addEventListener("input", function() {
 
     displayCards(filtered);
 });
+
+// DARK MODE toggle
+const toggleBtn = document.getElementById("themeToggle");
+
+// Load saved preference
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    toggleBtn.textContent = "☀️";
+}
+
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    const darkModeEnabled = document.body.classList.contains("dark");
+
+    // Save preference
+    localStorage.setItem("theme", darkModeEnabled ? "dark" : "light");
+
+    toggleBtn.textContent = darkModeEnabled ? "☀️" : "🌙";
+});
