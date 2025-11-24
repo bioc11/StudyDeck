@@ -1,106 +1,106 @@
 {
   "title": "C#",
   "description": "Basic C# questions for beginners.",
-      "cards": [
-        {
-          "question": "What is C#?",
-          "answer": "C# is a modern, object-oriented programming language developed by Microsoft. It is used to build many types of applications—desktop, web, mobile, cloud, games—and runs on the .NET platform."
-        },
-        {
-          "question": "What is .NET?",
-          "answer": ".NET is the ecosystem that supports C# programs. It includes the runtime that executes your code, the Base Class Library (BCL) that provides ready-made functionality, the SDK tools that help you build applications, and additional components for creating web, mobile, and desktop apps. It is also shared by multiple programming languages, not just C#."
-        },
-        {
-          "question": "True/False. C# is a special-purpose language optimized for making web applications.",
-          "answer": "False. C# is a general-purpose programming language designed to build many types of applications—not just web apps."
-        },
-        {
-          "question": "What are the two main components of a C# project, and what file extensions does each one use?",
-          "answer": ""
-        },
-        {
-          "question": "When creating a new C# project, in what situation should you check 'Place solution and project in the same directory,' and why?",
-          "answer": ""
-        },
-        {
-          "question": "Why do we need a compiler when writing C# programs, and what types of files does the compiler produce for the computer to run?",
-          "answer": ""
-        },
-        {
-          "question": "What is Intermediate Language (IL), and why does C# compile into IL instead of compiling directly to machine code?",
-          "answer": "IL is a CPU-independent low-level language that .NET uses as an intermediate step. C# compiles to IL so the same code can run on different platforms, with the JIT compiler converting IL to actual machine code at runtime."
-        },
-        {
-          "question": "In the .NET compilation process, what are the two main steps that occur between writing C# code and running the program?",
-          "answer": "a. The C# compiler (csc) converts C# code into IL in a .dll or .exe file. b. The JIT compiler converts IL into machine code when the program runs."
-        },
-        {
-          "question": "What role does the Just-In-Time (JIT) compiler play when running a .NET application?",
-          "answer": "The JIT compiler takes IL and translates it into the machine code specific to the computer’s CPU at the moment the program is executed."
-        },
-        {
-          "question": "How does the two-step compilation process (C# → IL → machine code) help make .NET cross-platform?",
-          "answer": "Because IL is platform-neutral, any system with a .NET runtime can JIT-compile the same IL into the correct machine code for its own CPU and operating system."
-        },
-        {
-          "question": "True/False. The final machine code that actually runs on your computer is generated during execution, not during the initial C# compilation step.",
-          "answer": "True. The C# compiler produces IL, and the machine code is produced later by the JIT compiler when the program runs."
-        },
-        {
-          "question": "What is AOT (Ahead-of-Time) compilation, and how does it differ from JIT (Just-in-Time) compilation?",
-          "answer": "AOT compilation converts source code or IL into native machine code ahead of execution. JIT compiles IL to machine code at runtime. AOT improves startup performance and reduces runtime overhead but may produce larger binaries and reduce runtime flexibility."
-        },
-        {
-          "question": "What is the Base Class Library (BCL) in C#, and what is its purpose?",
-          "answer": "The Base Class Library (BCL) is a large collection of prewritten code that provides fundamental building blocks for programs. It includes many namespaces, classes, methods, and properties that developers can use instead of writing functionality from scratch."
-        },
-        {
-          "question": "What is the role of the Main method in a C# program, and how does it relate to the Program class?",
-          "answer": "The Main method is the entry point of a C# program—it is the first code that runs when the program starts. The compiler places user code inside Main, which itself resides in the Program class. Other methods run only when called from Main or its descendants."
-        },
-        {
-          "question": "What is a statement in C#, and what role does it play in a program?",
-          "answer": "A statement is a single instruction or command executed by the computer. Most statements end with a semicolon. They form the basic building blocks of a program, executed in sequence. Example: Console.WriteLine(\"Hello, World!\");"
-        },
-        {
-          "question": "What is a variable in programming, and what are the steps needed to use one?",
-          "answer": "A variable is a container for data whose value can change during program execution. Steps: 1. Declaration (give it a name and type), 2. Assignment (store a value), 3. Usage (use it in expressions or operations)."
-        },
-        {
-          "question": "True/False. In C#, the compiler ignores extra spaces, tabs, and blank lines in the code, so whitespace has no effect on how the program runs.",
-          "answer": "True."
-        },
-        {
-          "question": "True/False. 'int x=5;' and 'int    x = 5;' produce the same result because C# ignores extra whitespace.",
-          "answer": "True. C# treats spaces, tabs, and blank lines as whitespace and ignores them as long as tokens are properly separated."
-        },
-        {
-          "question": "True/False. In the code 'int number = 5; Console.WriteLine(\"Number: \" + number);' the string concatenation is a statement on its own.",
-          "answer": "False. The statement is Console.WriteLine(\"Number: \" + number); The expression is only part of the statement."
-        },
-        {
-          "question": "True/False. Moving Console.WriteLine(x + y); outside of Main will still run correctly because x and y are declared variables.",
-          "answer": "False. Only code inside Main (or methods called by Main) executes. Moving it outside causes a compile-time error because it is not inside a method."
-        },
-        {
-          "question": "True/False. The semicolon at the end of a statement is optional if the statement is the last line in Main.",
-          "answer": "False. Every statement must end with a semicolon, regardless of position."
-        },
-        {
-          "question": "True/False. In the code shown, 'number = number + 10;' does not declare a new variable; it updates the existing one.",
-          "answer": "True. The first line declares the variable; the second line reassigns it."
-        },
-        {
-          "question": "True/False. Even with unusual spacing and line breaks, the code will compile and run correctly.",
-          "answer": "True. C# ignores extra or missing whitespace as long as tokens are properly separated."
-        },
-        {
-          "question": "Does 'var x;' compile?",
-          "answer": ""
-        },
-        {
-          "question": "In 'var input = Console.ReadLine();' what is the inferred type of 'input'?",
-          "answer": ""
-        }
-    ]
+  "cards": [
+    {
+      "question": "What is C#?",
+      "answer": "C# is a modern, object-oriented programming language developed by Microsoft. It is used to build many types of applications—desktop, web, mobile, cloud, games—and runs on the `.NET` platform."
+    },
+    {
+      "question": "What is .NET?",
+      "answer": ".NET is the ecosystem that supports C# programs. It includes:\n\n- The **runtime** that executes your code\n- The **Base Class Library (BCL)** that provides ready-made functionality\n- **SDK tools** that help you build applications\n- Additional components for creating **web, mobile, and desktop apps**\n\nIt is also shared by multiple programming languages, not just C#."
+    },
+    {
+      "question": "True/False. C# is a special-purpose language optimized for making web applications.",
+      "answer": "**False.** C# is a general-purpose programming language designed to build many types of applications—not just web apps."
+    },
+    {
+      "question": "What are the two main components of a C# project, and what file extensions does each one use?",
+      "answer": "- **Solution file (`.sln`)**: organizes one or more projects\n- **Project file (`.csproj`)**: defines the project and its settings"
+    },
+    {
+      "question": "When creating a new C# project, in what situation should you check 'Place solution and project in the same directory,' and why?",
+      "answer": "Check this option if you want a **simpler folder structure** where the solution file and project files are together. Otherwise, the solution can be separate and manage multiple projects."
+    },
+    {
+      "question": "Why do we need a compiler when writing C# programs, and what types of files does the compiler produce for the computer to run?",
+      "answer": "The **compiler** converts human-readable C# code into **Intermediate Language (IL)**, which the .NET runtime can execute. The compiler produces `.exe` or `.dll` files."
+    },
+    {
+      "question": "What is Intermediate Language (IL), and why does C# compile into IL instead of compiling directly to machine code?",
+      "answer": "IL is a CPU-independent low-level language used by .NET. C# compiles to IL so the same code can run on different platforms. The **JIT compiler** converts IL to actual machine code at runtime."
+    },
+    {
+      "question": "In the .NET compilation process, what are the two main steps that occur between writing C# code and running the program?",
+      "answer": "1. **C# compiler (`csc`)** converts code into IL in a `.dll` or `.exe`\n2. **JIT compiler** converts IL into machine code at runtime"
+    },
+    {
+      "question": "What role does the Just-In-Time (JIT) compiler play when running a .NET application?",
+      "answer": "The JIT compiler takes IL and translates it into the **machine code** specific to the computer’s CPU **when the program runs**."
+    },
+    {
+      "question": "How does the two-step compilation process (C# → IL → machine code) help make .NET cross-platform?",
+      "answer": "Because IL is **platform-neutral**, any system with a .NET runtime can JIT-compile the same IL into machine code for its own CPU and OS."
+    },
+    {
+      "question": "True/False. The final machine code that actually runs on your computer is generated during execution, not during the initial C# compilation step.",
+      "answer": "**True.** The C# compiler produces IL; the machine code is produced later by the JIT compiler at runtime."
+    },
+    {
+      "question": "What is AOT (Ahead-of-Time) compilation, and how does it differ from JIT (Just-in-Time) compilation?",
+      "answer": "AOT compilation converts **source code or IL** into native machine code **before execution**. JIT compilation converts IL to machine code **at runtime**. AOT improves startup performance but may produce larger binaries and reduce flexibility."
+    },
+    {
+      "question": "What is the Base Class Library (BCL) in C#, and what is its purpose?",
+      "answer": "The BCL is a large collection of prewritten code providing **fundamental building blocks** for programs. It includes **namespaces, classes, methods, and properties** to avoid rewriting common functionality."
+    },
+    {
+      "question": "What is the role of the Main method in a C# program, and how does it relate to the Program class?",
+      "answer": "The `Main` method is the **entry point** of a C# program—the first code executed. It resides in the `Program` class, and all other methods run when called from `Main`."
+    },
+    {
+      "question": "What is a statement in C#, and what role does it play in a program?",
+      "answer": "A **statement** is a single instruction executed by the computer. Most statements end with a semicolon (`;`).\n\nExample:\n```\nConsole.WriteLine(\"Hello, World!\");\n```"
+    },
+    {
+      "question": "What is a variable in programming, and what are the steps needed to use one?",
+      "answer": "**Variable:** a container for data whose value can change.\n\n**Steps:**\n1. **Declaration:** give it a name and type\n2. **Assignment:** store a value\n3. **Usage:** use it in expressions or operations"
+    },
+    {
+      "question": "True/False. In C#, the compiler ignores extra spaces, tabs, and blank lines in the code, so whitespace has no effect on how the program runs.",
+      "answer": "**True.**"
+    },
+    {
+      "question": "True/False. In the code:\n```\nint x=5;\nint      x   =   5;\n```\nproduce the same result because C# ignores extra whitespace.",
+      "answer": "**True.** C# treats spaces, tabs, and blank lines as whitespace as long as tokens are properly separated."
+    },
+    {
+      "question": "True/False. In the code:\n```\nint number = 5;\nConsole.WriteLine(\"Number: \" + number);\n```\nthe string concatenation is a statement on its own.",
+      "answer": "**False.** The statement is `Console.WriteLine(\"Number: \" + number);`. The expression is only part of the statement."
+    },
+    {
+      "question": "True/False. Will the following line:\n```\nConsole.WriteLine(x + y);\n```\nrun correctly if placed outside of the `Main` method, assuming `x` and `y` are declared variables?",
+      "answer": "**False.** Only code inside `Main` (or methods called by `Main`) executes. Moving it outside causes a compile-time error."
+    },
+    {
+      "question": "True/False. The semicolon at the end of a statement is optional if the statement is the last line in Main.",
+      "answer": "**False.** Every statement must end with a semicolon."
+    },
+    {
+      "question": "True/False. The following code:\n```\nnumber = number + 10;\n```\n does not declare a new variable; it updates the existing one.",
+      "answer": "**True.** The first line declares the variable; the second line reassigns it."
+    },
+    {
+      "question": "True/False. Even with unusual spacing and line breaks, the code will compile and run correctly.",
+      "answer": "**True.** C# ignores extra or missing whitespace as long as tokens are properly separated."
+    },
+    {
+      "question": "Does the following code compile?\n```\nvar x;\n```",
+      "answer": "**No.** `var` must be initialized to infer the type."
+    },
+    {
+      "question": "In the following code what is the inferred type of `input`?\n```\nvar input = Console.ReadLine();\n```\n",
+      "answer": "The inferred type is **`string`**."
+    }
+  ]
 }
