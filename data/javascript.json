@@ -3,12 +3,12 @@
   "description": "A deck covering JavaScript fundamentals.",
   "cards": [
     {
-      "question": "What is localStorage?",
-      "answer": "A built-in browser feature that lets you store small amounts of data directly in the user's browser, and the data stays there even after the page is refreshed or the browser is closed.\n- It’s part of the Web Storage API.\n- It stores key–value pairs (both are strings).\n- Data does not expire until you remove it manually.\n- It is specific to the domain (so other websites cannot see it)."
+      "question": "What is `localStorage`?",
+      "answer": "A built-in browser feature that lets you store small amounts of data directly in the user's browser. The data persists even after the page is refreshed or the browser is closed.\n\n**Details:**\n- Part of the **Web Storage API**\n- Stores **key–value pairs** (both are strings)\n- Data does not expire until manually removed\n- **Domain-specific** (other websites cannot access it)"
     },
     {
-      "question": "When is localStorage used?",
-      "answer": "Common uses:\n- Dark/light theme preference\n- Keeping a user logged in (temporary tokens)\n- Saving quiz progress, settings, filters\n- Storing small UI preferences\nLimitations:\n- Capacity ~5MB (depending on browser)\n- Only strings. If you want to store an object/array, you must convert it to JSON.\n- Not for sensitive data (no encryption)\n- Synchronous (can block if used heavily)"
+      "question": "When is `localStorage` used?",
+      "answer": "**Common uses:**\n- Dark/light theme preference\n- Keeping a user logged in (temporary tokens)\n- Saving quiz progress, settings, filters\n- Storing small UI preferences\n\n**Limitations:**\n- Capacity ~5MB (varies by browser)\n- Only stores **strings** (objects/arrays must be converted to JSON)\n- Not for sensitive data (no encryption)\n- **Synchronous** (can block the main thread if used heavily)"
     }
   ]
 }

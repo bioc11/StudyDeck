@@ -74,8 +74,8 @@ function renderCards(list) {
         card.className = "card";
 
         card.innerHTML = `
-            <div class="question">${index + 1}. ${item.question}</div>
-            <div class="answer">${item.answer || "<i>No answer yet.</i>"}</div>
+            <div class="question">${marked.parse(`${index + 1}. ${item.question}`)}</div>
+            <div class="answer">${item.answer ? marked.parse(item.answer) : "<i>No answer yet.</i>"}</div>
         `;
 
         card.addEventListener("click", () => {
