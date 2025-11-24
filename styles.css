@@ -5,7 +5,7 @@
     --card-shadow: rgba(0, 0, 0, 0.06);
     --header-bg: #6E00B3;
     --search-bg: white;
-    --answer-text: #333; /* answer text color */
+    --answer-text: #333;
 }
 
 .dark {
@@ -15,7 +15,7 @@
     --card-shadow: rgba(0, 0, 0, 0.4);
     --header-bg: #6E00B3;
     --search-bg: #333;
-    --answer-text: #e2e2e2; /* lighter for dark mode */
+    --answer-text: #e2e2e2;
 }
 
 body, .card, header {
@@ -30,12 +30,35 @@ body {
 }
 
 header {
-    padding: 20px;
-    background: var(--header-bg);
-    color: white;
-    text-align: center;
     position: sticky;
     top: 0;
+    z-index: 100;
+    background: var(--header-bg);
+    color: white;
+    padding: 15px 20px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-left,
+.header-right {
+    min-width: 50px; 
+}
+
+header h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 28px;
+    flex-grow: 1;
+}
+
+.header-bottom {
+    margin-top: 10px;
+    text-align: center;
 }
 
 .top-controls {
@@ -45,14 +68,9 @@ header {
     margin-top: 10px;
 }
 
-header h1 {
-    margin: 0 0 10px 0;
-    font-size: 28px;
-}
-
 #searchBox {
-    width: 70%;
-    max-width: 400px;
+    width: 60%;
+    max-width: 350px;
     padding: 10px;
     border-radius: 6px;
     border: none;
@@ -60,8 +78,9 @@ header h1 {
     color: var(--text);
 }
 
-#themeToggle {
-    padding: 10px 14px;
+#themeToggle,
+#backBtn {
+    padding: 8px 12px;
     font-size: 18px;
     border: none;
     border-radius: 6px;
@@ -70,24 +89,64 @@ header h1 {
     color: var(--text);
 }
 
-#cardsContainer {
-    padding: 20px;
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+#themeToggle:hover,
+#backBtn:hover {
+    opacity: 0.85;
 }
 
-.card {
+/* ---------------------
+   DECK LIST
+---------------------- */
+.deck-list {
+    display: grid;
+    padding: 20px;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.deck-card {
     background: var(--card-bg);
-    box-shadow: 0px 4px 10px var(--card-shadow);
     padding: 20px;
     border-radius: 12px;
+    box-shadow: 0px 4px 10px var(--card-shadow);
     cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+
+.deck-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 14px var(--card-shadow);
+    border-color: var(--header-bg);
+}
+
+.deck-card h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.deck-card p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--answer-text);
+}
+
+/* ---------------------
+   FLASHCARDS
+---------------------- */
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px var(--card-shadow);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 6px 14px var(--card-shadow);
 }
 
 .card .question {
@@ -99,6 +158,8 @@ header h1 {
     display: none;
     margin-top: 10px;
     color: var(--answer-text);
+    border-top: 1px solid rgba(0,0,0,0.1); 
+    padding-top: 10px;
 }
 
 .card.open .answer {
