@@ -1,5 +1,7 @@
 let decks = [];
 let currentDeck = null;
+let isStudyMode = false;
+const studyBtn = document.getElementById("studyModeBtn");
 
 // -----------------------------
 // LOAD DECKS
@@ -58,6 +60,9 @@ function openDeck(index) {
     search.value = "";
     search.style.display = "inline-block";
     back.style.display = "inline-block";
+    studyBtn.textContent = "🟨"; 
+    studyBtn.style.display = "inline-block";
+    isStudyMode = false;
 
     renderCards(currentDeck.cards);
 }
@@ -107,6 +112,7 @@ document.getElementById("searchBox").addEventListener("input", function () {
 // -----------------------------
 document.getElementById("backBtn").addEventListener("click", () => {
     currentDeck = null;
+    document.getElementById("studyModeBtn").style.display = "none";
     renderDeckList();
 });
 
@@ -133,3 +139,84 @@ toggleBtn.addEventListener("click", () => {
 // INITIAL LOAD
 // -----------------------------
 loadDecks();
+
+// -----------------------------
+// STUDY MODE
+// -----------------------------
+let studyIndex = 0;
+let showingAnswer = false;
+
+studyBtn.addEventListener("click", () => {
+    if (!isStudyMode) {
+        startStudyMode();
+    } else {
+        exitStudyMode();
+    }
+});
+
+function startStudyMode() {
+    const main = document.getElementById("cardsContainer");
+    isStudyMode = true;
+    studyBtn.textContent = "📚";
+    studyIndex = 0;
+    showingAnswer = false;
+
+    main.innerHTML = `
+        <div id="studyCard" class="card">
+            <div id="question"></div>
+            <div id="answer" style="display:none;"></div>
+        </div>
+
+        <div class="study-controls">
+            <button id="previousBtn">&lt; Previous</button>
+            <button id="showBtn">Show Answer</button>
+            <button id="nextBtn">Next &gt;</button>
+        </div>
+    `;
+
+    loadStudyCard();
+
+    document.getElementById("showBtn").addEventListener("click", () => {
+        showingAnswer = !showingAnswer;
+        loadStudyCard();
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        studyIndex++;
+        if (studyIndex >= currentDeck.cards.length) {
+            studyIndex = 0; // loop
+        }
+        showingAnswer = false;
+        loadStudyCard();
+    });
+
+    document.getElementById("previousBtn").addEventListener("click", () => {
+        studyIndex--;
+        if (studyIndex < 0) {
+            studyIndex = currentDeck.cards.length - 1; // loop to last card
+        }
+        showingAnswer = false;
+        loadStudyCard();
+    });
+}
+
+function loadStudyCard() {
+    const questionBox = document.getElementById("question");
+    const answerBox = document.getElementById("answer");
+
+    const card = currentDeck.cards[studyIndex];
+
+    questionBox.innerHTML = marked.parse(card.question);
+    answerBox.innerHTML = card.answer ? marked.parse(card.answer) : "<i>No answer yet.</i>";
+
+    answerBox.style.display = showingAnswer ? "block" : "none";
+
+    document.getElementById("showBtn").textContent =
+        showingAnswer ? "Hide Answer" : "Show Answer";
+}
+
+function exitStudyMode() {
+    isStudyMode = false;
+    studyBtn.textContent = "🟨"; 
+    renderCards(currentDeck.cards);
+}

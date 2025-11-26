@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyDeck</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>StudyDeck</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
 
-<body>
+    <body>
 
-    <header>
-        <div class="header-top">
-            <div class="header-left">
-                <button id="backBtn" style="display:none;">← Back</button>
+        <header>
+            <div class="header-top">
+                <div class="header-left">
+                    <button id="backBtn" style="display:none;">← Back</button>
+                </div>
+
+                <h1 id="headerTitle">Study Deck</h1>
+
+                <div class="header-right">
+                    <button id="themeToggle">🌙</button>
+                    <button id="studyModeBtn" style="display:none;">🟨</button>
+                </div>
             </div>
 
-            <h1 id="headerTitle">Study Deck</h1>
-
-            <div class="header-right">
-                <button id="themeToggle">🌙</button>
+            <div class="header-bottom">
+                <input type="text" id="searchBox" placeholder="Search questions..." style="display:none;">
             </div>
-        </div>
-
-        <div class="header-bottom">
-            <input type="text" id="searchBox" placeholder="Search questions..." style="display:none;">
-        </div>
-    </header>
+        </header>
 
 
-    <main id="cardsContainer">
-        <!-- Cards will be inserted here by script.js -->
-    </main>
+        <main id="cardsContainer">
+            <!-- Cards will be inserted here by script.js -->
+        </main>
 
-    <script src="script.js"></script>
-    <script src="libs/marked.min.js"></script>
-    
-</body>
+        <script src="script.js"></script>
+        <script src="libs/marked.min.js"></script>
+        
+    </body>
 
 </html>
