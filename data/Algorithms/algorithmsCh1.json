@@ -1,0 +1,63 @@
+{
+  "title": "Grokking Algorithms chapter 1",
+  "description": "Practice quiz for Grokking Algorithms Ch. 1",
+  "cards": [
+    {
+      "question": "What is the key requirement for binary search to work correctly on a dataset?",
+      "answer": "Binary search requires the dataset to be sorted. Without ordering, the algorithm cannot determine which half of the data to discard."
+    },
+    {
+      "question": "In your own words, what does O(log n) mean in terms of how the algorithm behaves as input grows?",
+      "answer": "O(log n) means that the number of steps grows logarithmically as the input size increases. Each step reduces the problem size significantly (typically by half), so the algorithm scales very efficiently even for large inputs."
+    },
+    {
+      "question": "Why is binary search considered significantly faster than simple search for large datasets?",
+      "answer": "Binary search is faster because it eliminates half of the remaining elements at each step, whereas simple (linear) search checks elements one by one. This results in far fewer operations for large datasets."
+    },
+    {
+      "question": "If you have a list of 1,024 elements, what is the maximum number of steps binary search will take?",
+      "answer": "Maximum steps = log₂(1024) = 10 steps"
+    },
+    {
+      "question": "What is the difference between: runtime (time complexity) and actual execution time?",
+      "answer": "Time complexity (runtime): A theoretical measure of how the number of operations grows with input size (e.g., O(n), O(log n)). Actual execution time: The real time taken to run the algorithm, which depends on hardware, implementation, and environment."
+    },
+    {
+      "question": "Given the sorted list: [1, 3, 5, 7, 9, 11, 13, 15] - Trace binary search to find 7. - What are the midpoints checked? - Trace binary search to find 2 (not in list). -How does the algorithm terminate?",
+      "answer": "Find 7 -> Steps: Middle = 7 → found immediately, Midpoints checked: 7. - Find 2 (not in list) ->Steps: Middle = 7 → too high → search left half, Middle = 3 → too high → search left half. Middle = 1 → too low → search right (empty range). The search space becomes empty → element not found"
+    },
+    {
+      "question": "What happens if you try to apply binary search to: [10, 3, 7, 1, 9] - Explain precisely why it fails.",
+      "answer": "Unsorted list case -> [10, 3, 7, 1, 9]. Binary search fails because: It assumes the list is sorted, Decisions (go left or right) rely on ordering, In an unsorted list, eliminating half the data is invalid, leading to incorrect results"
+    },
+    {
+      "question": "For each scenario, determine the complexity: - You check each element one by one in a list → ?, - You repeatedly divide the problem size in half → ?, - You look at every pair of elements in a list → ?, You perform a constant number of operations regardless of input size → ?",
+      "answer": "Checking each element one by one → O(n), Dividing the problem size in half repeatedly → O(log n), Checking every pair of elements → O(n²), Constant number of operations → O(1)"
+    },
+    
+    {
+      "question": "Why is Big O expressed in terms of the worst-case scenario?",
+      "answer": "Big O uses the worst-case scenario to provide a guaranteed upper bound on performance. This ensures predictability and reliability regardless of input conditions."
+    },
+    {
+      "question": "If an algorithm is O(log n), is it always faster than an O(n) algorithm? Explain a realistic exception.",
+      "answer": "No, O(log n) is not always faster in practice. Example: For very small datasets, a simple O(n) algorithm may be faster due to: Lower constant factors, Less overhead (e.g., no need for sorting)"
+    },
+    {
+      "question": "Binary search reduces the search space by half each step. What would be the complexity if instead you reduced it by one-third each step?",
+      "answer": "Reducing the problem by one-third each step still results in O(log n) complexity. The base of the logarithm changes, but Big O ignores constant factors."
+    },
+    {
+      "question": "You are building a system where: Data is frequently inserted in random order, Searches are frequent. Would you prefer: Keeping the list sorted (to use binary search), or Keeping it unsorted (simple inserts, linear search)? Justify the tradeoff.",
+      "answer": "Tradeoff: Keeping list sorted: Search: O(log n), Insert: O(n) (due to shifting elements). Keeping list unsorted: Insert: O(1), Search: O(n). Decision depends on usage:  If searches are much more frequent → prefer sorted list. If inserts dominate → prefer unsorted list."
+    },
+    {
+      "question": "Why do we ignore constants in Big O notation? (e.g., why O(2n) → O(n)). Explain why binary search is not commonly used on linked lists, even if they are sorted.",
+      "answer": "Constants are ignored because Big O focuses on growth rate, not exact operation count. As input size grows, constants become insignificant compared to the dominant term. Example: O(2n) → O(n)"
+    },
+    {
+      "question": "Explain why binary search is not commonly used on linked lists, even if they are sorted.",
+      "answer": "Binary search is inefficient on linked lists because: There is no direct access to the middle element. Traversal to reach the midpoint takes O(n), This removes the advantage of binary search, making it effectively no better than linear search."
+    }
+  ]
+}

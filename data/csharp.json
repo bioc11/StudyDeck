@@ -1,0 +1,24 @@
+{
+  "subject": "C#",
+  "description": "C# fundamentals and advanced topics",
+  "decks": [
+    {
+      "title": "C# Basics",
+      "description": "Syntax, variables, data types",
+      "dataFile": "data/Csharp/csharpBasics.json",
+      "cards": []
+    },
+    {
+      "title": "Assignment Operators",
+      "description": "Basic and compound assignment",
+      "dataFile": "data/Csharp/csharpAssignment Operators.json",
+      "cards": []
+    },
+    {
+      "title": "Value vs Reference Types",
+      "description": "Stack vs heap behavior",
+      "dataFile": "data/Csharp/csharpValueVsReferenceTypes.json",
+      "cards": []
+    }
+  ]
+}

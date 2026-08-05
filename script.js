@@ -1,0 +1,286 @@
+let subjects = [];
+let currentSubject = null;
+let currentDeck = null;
+let isStudyMode = false;
+const studyBtn = document.getElementById("studyModeBtn");
+
+// -----------------------------
+// LOAD DECKS
+// -----------------------------
+async function loadSubjects() {
+    const subjectFiles = [
+        "data/csharp.json",
+        "data/javascript.json",
+        "data/grokkingAlgorithms.json"
+    ];
+
+    try {
+        const promises = subjectFiles.map(async file => {
+            const response = await fetch(file);
+            return await response.json();
+        });
+
+        subjects = await Promise.all(promises);
+    } catch (e) {
+        document.getElementById("cardsContainer").innerHTML =
+            `<p style="padding:20px;color:red;">Failed to load subjects. Please refresh the page.</p>`;
+        return;
+    }
+
+    renderSubjectList();
+}
+
+// -----------------------------
+// RENDER SUBJECT SELECTION
+// -----------------------------
+function renderSubjectList() {
+    const main = document.getElementById("cardsContainer");
+    const search = document.getElementById("searchBox");
+    const back = document.getElementById("backBtn");
+    const title = document.getElementById("headerTitle");
+
+    search.style.display = "none";
+    back.style.display = "none";
+    studyBtn.style.display = "none";
+    title.textContent = "Study Deck";
+
+    main.innerHTML = `
+        <div class="deck-list">
+            ${subjects.map((subject, i) => `
+                <div class="deck-card" onclick="openSubject(${i})">
+                    <h2>${subject.subject}</h2>
+                    <p>${subject.description}</p>
+                </div>
+            `).join("")}
+        </div>
+    `;
+}
+
+// -----------------------------
+// OPEN A SUBJECT
+// -----------------------------
+function openSubject(index) {
+    currentSubject = subjects[index];
+
+    const title = document.getElementById("headerTitle");
+    const back = document.getElementById("backBtn");
+
+    title.textContent = currentSubject.subject;
+    back.style.display = "inline-block";
+
+    renderDeckList(currentSubject.decks);
+}
+
+// -----------------------------
+// RENDER DECK SELECTION
+// -----------------------------
+function renderDeckList(decks) {
+    const main = document.getElementById("cardsContainer");
+    const search = document.getElementById("searchBox");
+    const title = document.getElementById("headerTitle");
+
+    search.style.display = "none";
+    studyBtn.style.display = "none";
+    title.textContent = currentSubject.subject;
+
+    main.innerHTML = `
+        <div class="deck-list">
+            ${decks.map((deck, i) => `
+                <div class="deck-card" onclick="openDeck(${i})">
+                    <h2>${deck.title}</h2>
+                    <p>${deck.description}</p>
+                </div>
+            `).join("")}
+        </div>
+    `;
+}
+
+// -----------------------------
+// OPEN A DECK
+// -----------------------------
+async function openDeck(index) {
+    currentDeck = currentSubject.decks[index];
+
+    if (currentDeck.dataFile && currentDeck.cards.length === 0) {
+        const response = await fetch(currentDeck.dataFile);
+        const data = await response.json();
+        currentDeck.cards = data.cards.filter(c => c.question);
+    }
+
+    const title = document.getElementById("headerTitle");
+    const search = document.getElementById("searchBox");
+    const back = document.getElementById("backBtn");
+
+    title.textContent = currentDeck.title;
+    search.value = "";
+    search.style.display = "inline-block";
+    back.style.display = "inline-block";
+
+    studyBtn.style.display = "inline-block";
+    studyBtn.textContent = "🟨";
+    isStudyMode = false;
+
+    renderCards(currentDeck.cards);
+}
+
+// -----------------------------
+// DISPLAY CARDS
+// -----------------------------
+function renderCards(list) {
+    const main = document.getElementById("cardsContainer");
+    main.innerHTML = "";
+
+    list.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <div class="question">${marked.parse(`${index + 1}. ${item.question}`)}</div>
+            <div class="answer">${item.answer ? marked.parse(item.answer) : "<i>No answer yet.</i>"}</div>
+        `;
+
+        card.addEventListener("click", () => {
+            card.classList.toggle("open");
+        });
+
+        main.appendChild(card);
+    });
+}
+
+// -----------------------------
+// SEARCH INSIDE DECK
+// -----------------------------
+document.getElementById("searchBox").addEventListener("input", function () {
+    if (!currentDeck) return;
+
+    const text = this.value.toLowerCase();
+
+    const filtered = currentDeck.cards.filter(q =>
+        q.question.toLowerCase().includes(text) ||
+        (q.answer && q.answer.toLowerCase().includes(text))
+    );
+
+    renderCards(filtered);
+});
+
+// -----------------------------
+// BACK BUTTON
+// -----------------------------
+document.getElementById("backBtn").addEventListener("click", () => {
+    if (currentDeck) {
+        if (isStudyMode) exitStudyMode();
+        currentDeck = null;
+        renderDeckList(currentSubject.decks);
+        return;
+    }
+
+    if (currentSubject) {
+        currentSubject = null;
+        renderSubjectList();
+        return;
+    }
+});
+
+// -----------------------------
+// DARK MODE
+// -----------------------------
+const toggleBtn = document.getElementById("themeToggle");
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    toggleBtn.textContent = "☀️";
+}
+
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    const darkMode = document.body.classList.contains("dark");
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+
+    toggleBtn.textContent = darkMode ? "☀️" : "🌙";
+});
+
+// -----------------------------
+// STUDY MODE
+// -----------------------------
+let studyIndex = 0;
+let showingAnswer = false;
+
+studyBtn.addEventListener("click", () => {
+    if (!isStudyMode) {
+        startStudyMode();
+    } else {
+        exitStudyMode();
+    }
+});
+
+function startStudyMode() {
+    const main = document.getElementById("cardsContainer");
+    isStudyMode = true;
+    studyBtn.textContent = "📚";
+    studyIndex = 0;
+    showingAnswer = false;
+
+    main.innerHTML = `
+        <div id="studyCard" class="card">
+            <div id="question"></div>
+            <div id="answer" style="display:none;"></div>
+        </div>
+
+        <div class="study-controls">
+            <button id="previousBtn">&lt; Previous</button>
+            <button id="showBtn">Show Answer</button>
+            <button id="nextBtn">Next &gt;</button>
+        </div>
+    `;
+
+    loadStudyCard();
+
+    document.getElementById("showBtn").addEventListener("click", () => {
+        showingAnswer = !showingAnswer;
+        loadStudyCard();
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        studyIndex++;
+        if (studyIndex >= currentDeck.cards.length) {
+            studyIndex = 0; // loop
+        }
+        showingAnswer = false;
+        loadStudyCard();
+    });
+
+    document.getElementById("previousBtn").addEventListener("click", () => {
+        studyIndex--;
+        if (studyIndex < 0) {
+            studyIndex = currentDeck.cards.length - 1; // loop to last card
+        }
+        showingAnswer = false;
+        loadStudyCard();
+    });
+}
+
+function loadStudyCard() {
+    const questionBox = document.getElementById("question");
+    const answerBox = document.getElementById("answer");
+    const card = currentDeck.cards[studyIndex];
+
+    questionBox.innerHTML = marked.parse(card.question);
+    answerBox.innerHTML = card.answer ? marked.parse(card.answer) : "<i>No answer yet.</i>";
+
+    answerBox.style.display = showingAnswer ? "block" : "none";
+
+    document.getElementById("showBtn").textContent =
+        showingAnswer ? "Hide Answer" : "Show Answer";
+}
+
+function exitStudyMode() {
+    isStudyMode = false;
+    studyBtn.textContent = "🟨"; 
+    renderCards(currentDeck.cards);
+}
+
+// -----------------------------
+// INITIAL LOAD
+// -----------------------------
+loadSubjects();

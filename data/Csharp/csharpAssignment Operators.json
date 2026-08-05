@@ -1,0 +1,166 @@
+{
+  "title": "C# Assignment Operators",
+  "description": "A deck covering C# Assignment Operators (=, +=, -=, *= etc.).",
+  "cards": [
+    {
+      "id":"1",
+      "question": "What is the value of x after this code?\n```\nint x = 10;\nint x += 5;\n```\n",
+      "answer": "\n```\nx = 15;"
+    },
+    {
+      "id":"2",
+      "question": "What is the value of x after this code?\n```\nint x = 20;\nx -= 8;\nx *= 2;\n```\n",
+      "answer": "\n```\nx = 24;"
+    },
+    {
+      "id":"3",
+      "question": "What is printed?\n```\nint x = 10;\nint y = 3;\nx /= y;\nConsole.WriteLine(x);\n```\n",
+      "answer": "\n```\n3"
+    },
+    {
+      "id":"4",
+      "question": "What is the value of x after this code?\n```\nint x = 5;\nx += 2;\nx *= 3;\nx -= 4;\n```\n",
+      "answer": "\n```\n17"
+    },
+    {
+      "id":"5",
+      "question": "What is printed?\n```\nstring? name = null;\nConsole.WriteLine(name ?? \"Unknown\");\n```\n",
+      "answer": "\n```\nUnknown \nBecause name is null."
+    },
+    {
+      "id":"6",
+      "question": "What is printed?\n```\nstring? name = \"Chris\";\nConsole.WriteLine(name ?? \"Unknown\");\n```\n",
+      "answer": "\n```\nChris \nBecause name is not null."
+    },
+    {
+      "id":"7",
+      "question": "What is the value of result?\n```\nstring? first = null;\nstring? second = \"Backup\";\nstring result = first ?? second;\n```\n",
+      "answer": "\n```\nBackup \n"
+    },
+    {
+      "id":"8",
+      "question": "What is the value of result?\n```\nstring? first = \"Primary\";\nstring? second = \"Backup\";\nstring result = first ?? second;\n```\n",
+      "answer": "\n```\nPrimary \nThe right side is ignored because the left side isn't null."
+    },
+    {
+      "id":"9",
+      "question": "What is the value of result?\n```\nstring? name = null;\nname ??= \"Guest\";\nConsole.WriteLine(name);\n```\n",
+      "answer": "\n```\nGuest \n"
+    },
+    {
+      "id":"10",
+      "question": "What is the value of result?\n```\nstring? name = \"Chris\"\nname ??= \"Guest\";\nConsole.WriteLine(name);\n```\n",
+      "answer": "\n```\nChris \n"
+    },
+    {
+      "id":"11",
+      "question": "What is printed?\n```\nstring? a = null;\nstring? b = null;\nstring? c = \"Third\";\nConsole.WriteLine(a ?? b ?? c ?? \"Default\");\n```\n",
+      "answer": "\n```\nThird \nEvaluation proceeds left to right."
+    },
+    {
+      "id":"12",
+      "question": "What is printed?\n```\nstring? a = null;\nstring result = a ?? \"One\";\nresult ??= \"Two\";\nConsole.WriteLine(result);\n```\n",
+      "answer": "\n```\nOne\n"
+    },
+    {
+      "id":"13",
+      "question": "What is x?\n```\nint x = 8;\nx *= 2;\nx -= 5;\nx /= 3;\n```\n",
+      "answer": "\n```\nx = 3\nRemember: integer division discards the remainder."
+    },
+    {
+      "id":"14",
+      "question": "\n```\nstring? title = null;\ntitle ??= \"Untitled\"; \ntitle ??= \"Unknown\";\n```\n",
+      "answer": "\n```\ntitle = \"Untitled\"\n"
+    },
+    {
+      "id":"15",
+      "question": "\n```\nstring? name = null;\nname ??= \"Chris\"; \nConsole.WriteLine(name ?? \"Unknown\");\n```\n",
+      "answer": "\n```\nChris\n"
+    },
+    {
+      "id":"16",
+      "question": "\n```\nstring? name = \"Bob\";\nname ??= \"Chris\"; \nConsole.WriteLine(name);\n```\n",
+      "answer": "\n```\nBob\n"
+    },
+    {
+      "id":"17",
+      "question": "\n```\nWhat is the final value of x?\nint x = 4; \nx += 3;\nx *= x;\n```\n",
+      "answer": "\n```\n49\n"
+    },
+    {
+      "id":"18",
+      "question": "\n```\nWhat is printed?\nstring? a = null; \nstring? b = \"Second\";\nConsole.WriteLine(a ?? b ?? \"Third\");\n```\n",
+      "answer": "\n```\nSecond\n"
+    },
+    {
+      "id":"19",
+      "question": "\n```\nint count = 20;\ncount /= 2; \ncount += 7;\ncount *= 2;\n```\n",
+      "answer": "\n```\n34\n"
+    },
+    {
+      "id":"20",
+      "question": "\n```\nList<string>? names = null;\nnames ??= new List<string>(); \nConsole.WriteLine(names.Count);\n```\n",
+      "answer": "\n```\n0, this would create a list of strings which would be empty\n"
+    },
+    {
+      "id":"21",
+      "question": "\n```\nstring? first = null;\nstring? second = null; \nConsole.WriteLine(first ?? second ?? \"Default\");\n```\n",
+      "answer": "\n```\nDefault\n"
+    },
+    {
+      "id":"22",
+      "question": "\n```\nstring? value = null;\nvalue ??= \"A\"; \nvalue ??= \"B\"; \nvalue ??= \"C\"; \nConsole.WriteLine(value);\n```\n",
+      "answer": "\n```\nA\n"
+    },
+    {
+      "id":"23",
+      "question": "\n```\nstring? name = null;\nConsole.WriteLine(name?.Length ?? 0);\n```\n",
+      "answer": "\n```\n0\n"
+    },
+    {
+      "id":"24",
+      "question": "\n```\nstring? name = \"Chris\";\nConsole.WriteLine(name?.Length ?? 0);\n```\n",
+      "answer": "\n```\n5\n"
+    },
+    {
+      "id":"25",
+      "question": "\n```\nPerson? p = null;\nConsole.WriteLine(p?.Name ?? \"Unknown\");\nAssume \nclass Person\n{\n  public string Name { get; set; }\n}\n",
+      "answer": "\n```\nUnknown\n"
+    },
+    {
+      "id":"26",
+      "question": "\n```\nPerson? p = new Person();\np.Name = \"Alice\";\nConsole.WriteLine(p?.Name ?? \"Unknown\");\n",
+      "answer": "\n```\nAlice\n"
+    },
+    {
+      "id":"27",
+      "question": "\n```\nWhat is the final value of name?\nstring? name = null;\n(name ??= \"Guest\") += \" User\";",
+      "answer": "\n```\nGuest User\n"
+    },
+    {
+      "id":"28",
+      "question": "\n```\nWhat is printed?\nList<int>? numbers = null;\nConsole.WriteLine(numbers?.Count ?? -1);",
+      "answer": "\n```\n-1\n"
+    },
+    {
+      "id":"29",
+      "question": "\n```\nList<int>? numbers = new List<int>();\nConsole.WriteLine(numbers?.Count ?? -1);",
+      "answer": "\n```\n0\n"
+    },
+    {
+      "id":"30",
+      "question": "\n```\nWhat is the final value of count?\nList<int>? numbers = null; \nnumbers ??= new List<int>(); \nint count = numbers?.Count ?? 0; \nAnd explain why both ??= and ?? are used here.",
+      "answer": "\n```\n0\n"
+    },
+    {
+      "id":"31",
+      "question": "\n```\nTranslate these shorthand operators into the longer if statements they represent.\nperson?.Address?.City ?? \"Unknown\"",
+      "answer": "\n```\nstring result;\nif (person == null)\n{\n    result = \"Unknown\";\n}\nelse if (person.Address == null)\n{\n    result = \"Unknown\";\n}\nelse if (person.Address.City == null)\n{\n    result = \"Unknown\";\n}\nelse\n{\n    result = person.Address.City;\n}\n"
+    },
+    {
+      "id":"32",
+      "question": "\n```\nTranslate these shorthand operators into the longer if statements they represent.\nstring city = person?.Address?.City ?? \"Athens\";\nAssume:\nclass Person\n{\n  public Address? Address { get; set; }\n}\n\nclass Address\n  public string? City {get; set; }\n}",
+      "answer": "\n```\nstring city;\nif (person  == null)\n{\n  city = \"Athens\";\n}\nelse if (person.Address == null)\n{\n    city = \"Athens\";\n}\nelse if (person.Address.City == null)\n{\n    city = \"Athens\";\n}\nelse\n{\n    city = person.Address.City;\n}\n\n\nCleaner version:\nstring city = \"Athens\";\nif (person != null &&\n    person.Address != null &&\n    person.Address.City != null)\n{\n   city = person.Address.City;\n}"
+    }
+  ]
+}

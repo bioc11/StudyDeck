@@ -1,0 +1,22 @@
+{
+  "subject": "Grokking Algorithms",
+  "description": "Algorithms explained through code examples",
+  "decks": [
+    {
+      "title": "Binary Search",
+      "description": "Searching for an element in a sorted array",
+      "dataFile": "data/Algorithms/algorithmsCh1.json",
+      "cards": []
+    },
+    {
+      "title": "Quick Sort",
+      "description": "A divide-and-conquer sorting algorithm",
+      "cards": []
+    },
+    {
+      "title": "Merge Sort",
+      "description": "A divide-and-conquer sorting algorithm",
+      "cards": []
+    }
+  ]
+}

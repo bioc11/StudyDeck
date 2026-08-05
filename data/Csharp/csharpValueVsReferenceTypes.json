@@ -1,0 +1,315 @@
+{
+  "title": "C# Value vs Reference Types",
+  "description": "A deck covering C# Value vs Reference Types.",
+  "cards": [
+    { 
+      "id":"1",
+      "question": "What is the fundamental difference between a value type and a reference type in C#?",
+      "answer": "The fundamental difference is what the variable actually contains. A value type variable stores the actual data, while a reference type variable stores a reference to an object that contains the data. Assigning a value type copies the value itself; assigning a reference type copies the reference, so multiple variables can refer to the same object.\n```\nint x = 10;\nint y = x;\ny = 20;\nConsole.WriteLine(x); // 10\nConsole.WriteLine(y); // 20.\n```\nWhen y = x happens, the value 10 is copied. After that, x and y are completely independent.<br> Common value types: int, double, bool, char, decimal, struct, enum.<br><br>A reference type variable contains a reference (address) to an object.\n```\nPerson p1 = new Person();\np1.Name = \"Alice\";\nPerson p2 = p1;\np2.Name = \"Bob\";\nConsole.WriteLine(p1.Name); // Bob\nConsole.WriteLine(p2.Name); // Bob\n```\nBoth variables still point to the same object.<br>No object was copied. Only the reference was copied.<br> Common reference types: string, arrays, classes, delegates,interfaces"    },
+    {
+      "id":"2",
+      "question": "Which of the following are value types and which are reference types? \n```\nint\ndouble\nbool\nchar\nstring\nDateTime\nobject\nint[]\nstruct\nclass\nenum",
+      "answer": "Value Types --> These store their data directly: int, double, bool, char, DateTime, struct, enum.<br>DateTime is actually a struct, which makes it a value type.<br><br>Reference Types --> These store a reference to an object: string, object, int[], class. <br><br>Arrays are always reference types, even when they contain value types. Many developers initially assume string is a value type because it behaves similarly to one, but string is actually a class. It's a reference type with immutable behavior."
+    },
+    {
+      "id":"3",
+      "question": "Where are these typically stored?<br>- Local value type variables<br>- Local reference variables<br>- Objects created with new<br><br>Explain carefully what is actually stored in each place.",
+      "answer": " \\- Local Value Type Variables: The variable contains the actual value. The value itself is stored directly in the variable.<br><br>- Local Reference Variables: The variable contains either: null or a reference to the object. The variable itself is usually local and therefore typically lives in the stack frame, but its value is a reference, not the object.<br><br>- Objects Created With new<br>The object created by new is typically allocated on the managed heap. The variable contains only a reference to that object.<br><br>Important: \"Value Types = Stack\" Is Not Always True<br><br>Value types are not always on the stack.<br>Reference types are not always on the heap.<br>The CLR and JIT are free to optimize storage locations."
+    },
+    {
+      "id":"4",
+      "question": "What happens here?\n```\nint a = 5;\nint b = a;\nb = 10;\n```\nWhat are the values of a and b afterward, and why?",
+      "answer": "After the code executes, the values are: a == 5 and b == 10. <br><br>int is a value type, so the value stored in a is copied into b. They are two independent variables, each containing its own copy of the value. Assignment of a value type copies the value itself. <br><br>If this had been a reference type, the reference would be copied instead, and both variables could end up referring to the same object."
+    },
+    {
+      "id":"5",
+      "question": "Explain this:\n```\nPerson p1 = new Person();\np1.Name = \"Anna\";\nPerson p2 = p1;\np2.Name = \"Maria\";\n```\nWhat happens to p1.Name and why? Assume:\n```\nclass Person\n{\n    public string Name;\n}\n",
+      "answer": "After the code executes the result is:\n```\np1.Name == \"Maria\"\np2.Name == \"Maria\"\n```\nA Person is created. <br>The object's Name field is updated.<br> Person is a class, and classes are reference types. So the object is not copied. Instead, the reference stored in p1 is copied into p2. Now both variables refer to the same object. p2 follows its reference to the object and changes the Name field.<br>Both print \"Maria\" because both variables point to the same Person object.<br><br>p1 does not contain a Person. It contains a reference to a Person. When you write Person p2 = p1;, you copy the reference, not the object. Therefore p1 and p2 both refer to the same Person, and changes made through one variable are visible through the other."
+    },
+    {
+      "id":"6",
+      "question": "Is string a value type or a reference type? Explain why this behaves differently.\n```\nstring a = \"hello\";\nstring b = a;\nb = \"world\";\n",
+      "answer": "string is a reference type.\n```\nstring is a reference type.\n```\nEven though string is a reference type, it behaves “value-like” because it is:<br>1. Immutable : You cannot modify a string after it is created.<br>2. Assignment copies references, but mutation is impossible : <br>Reference is copied (like all reference types) but object state cannot change therefore each “change” creates a new object"
+    },
+    {
+      "id":"7",
+      "question": "What does this actually contain?\n```\nPerson p = new Person();\n```\nSpecifically:<br>What is stored in variable p?<br>Where is the actual object?",
+      "answer": "p does not contain a Person object. It contains a reference to the object. So p stores something like: <br>a managed reference (not a raw pointer you control) which identifies where the object lives.<br>It is a small fixed-size value internally (implementation detail), not the object itself.<br><br>The object created by: new Person() is allocated on the managed heap.<br><br><br><br>Step A — object creation : CLR allocates memory for a Person on the heap, initializes fields to default values<br><br>Step B — reference assignment : the address/reference of that object is stored in p"   
+    },
+    {
+      "id":"8",
+      "question": "Consider:\n```\nPoint p1 = new Point();\nPoint p2 = p1;\n```\nAssume Point is a struct.<br>What exactly gets copied?",
+      "answer": "Because Point is a struct (value type):<br>The entire contents of p1 are copied into p2 field-by-field.<br>Not a reference. Not an address. A full value copy.<br><br>Even though structs are “value types”, they can still contain references:\n```\nstruct Point{\n    public string Label;\n}\n```\nThen: p2 = p1;  results in: p1.Label ──► \"A\"  p2.Label ──► \"A\"<br><br>Only the reference inside the struct is copied, not the string itself. So you get: two separate structs but possibly shared referenced objects inside them.<br><br>Struct assignment copies the entire value (all fields), creating a new independent instance; no object identity or shared heap allocation is involved for the struct itself."
+    },
+    {
+      "id":"9",
+      "question": "True or false?<br>“Reference types are always stored on the heap.”",
+      "answer": "False.<br><br>A reference type consists of two parts:<br>The object<br>The reference variable<br>They are not stored in the same place. The object is allocated on the managed heap. The reference variable is stored wherever the variable lives (often stack for locals)<br><br>What is always true: The object instance of a reference type is allocated on the managed heap (in normal .NET execution). Modern runtime optimizations can further change allocation behavior"
+    },
+    {
+      "id":"10",
+      "question": "True or false?<br>“Value types are always stored on the stack.”",
+      "answer": "False.<br><br>A value type stores its data directly, but where it is stored depends on where it is used, not on the fact that it is a value type.<br><br>The real rule is:<br> Value types are stored inline wherever they appear.That means:<br> inside stack frames (locals)<br> inside heap objects (fields)<br> inside arrays (elements)<br> inside other structs <br> They are not tied to the stack. Value types are stored inline at their declaration site, which may be on the stack, on the heap (inside objects or arrays), or inside other value types."
+    },
+    {
+      "id":"11",
+      "question": "Explain boxing in C#.<br>Example:\n```\nint x = 5;\nobject o = x;\n```\nWhat happened internally?",
+      "answer": "Boxing is the process of converting a value type into a reference type (object) by wrapping the value inside a heap-allocated object. Unboxing is the reverse process.<br><br>Boxing has overhead:<br>1. Allocation: heap allocation<br>2. Copy: value is copied into heap object<br>3. GC pressure: increases garbage collection workload<br>4. Performance cost: significantly slower than using raw value types"   
+     },
+    {
+      "id":"12",
+      "question": "What is the difference between these?\n```\nPerson p = null;\nPerson p = new Person();\n```\nMemory-wise and runtime-wise.",
+      "answer": "These two lines differ fundamentally in allocation, object existence, and runtime behavior. Assume\n```\nclass Person\n{\n    public string Name;\n}\n```\nPerson p = null;<br>What happens: No Person object is created, only a reference variable is declared and initialized to “no object”. Only a reference variable exists, pointing to nothing<br><br>Person p = new Person();<br>This triggers full object creation. A heap object is created and p holds its reference."
+    },
+    {
+      "id":"13",
+      "question": "What is copied here?\n```\nPerson p1 = new Person();\nPerson p2 = p1;\nAssume:\nclass Person\n{\n    public string Name;\n}\n```\n",
+      "answer": "Only the reference is copied.<br>Both p1 and p2 point to the same object in the heap.<br>Mutating the object through either reference affects both."
+    },
+    {
+      "id":"14",
+      "question": "After this code executes, what are the values? And why?\n```\nint x = 10;\nint y = x;\ny = 20;\n```\n",
+      "answer": "x = 10 and y = 20.<br><br>Value types are copied, y is independent from x."
+    },
+    {
+      "id":"15",
+      "question": "What is copied here?\n```\nPerson p1 = new Person();\nPerson p2 = p1;\n```\n",
+      "answer": "Only the reference is copied, not the Person object. So both variables refer to the same Person object in memory."
+    },
+    {
+      "id":"16",
+      "question": "After this code executes, what are the values?\n```\nint x = 10;\nint y = x;\ny = 20;\n```\nWhat are x and y? And why?",
+      "answer": "After execution: x = 10, y = 20.<br> int is a value type, so y = x copies the value 10. After that, x and y are independent variables. Changing y does not affect x."
+    },
+    { 
+      "id":"17",
+      "question": "After this code executes. What is\np1.Name\n and why?:\n```\nPerson p1 = new Person();\np1.Name = \"Anna\";\n\nPerson p2 = p1;\n\np2.Name = \"Maria\";",
+      "answer": "p1.Name == \"Maria\"<br><br>p1 and p2 reference at the same objet. Changing object through one reference affects the same heap instance."
+    },
+    {
+      "id":"18",      
+      "question": "True or false?\nA reference variable contains the actual object.\nExplain.",
+      "answer": "False. <br>A reference variable stores a reference (address like value), not the object itself.<br>The actual object is stored separately on the heap."
+    },
+    {
+      "id":"19",  
+      "question": "Where is the actual object usually allocated here? And where is the variable p itself typically stored?\n```\nPerson p = new Person();\n",
+      "answer": "p --> reference variable (typically on stack if local).<br><br>new Person() --> object stored on heap.<br><br>The variable does not contain the object, only a reference to it."
+    },
+    {
+      "id":"20",  
+      "question": "Where is the actual object usually allocated here? And where is the variable p itself typically stored?\n```\nPerson p = new Person();\n",
+      "answer": "p --> reference variable (typically on stack if local).<br><br>new Person() --> object stored on heap.<br><br>The variable does not contain the object, only a reference to it."
+    },
+    {
+      "id":"21",  
+      "question": "What is the value of a after this?\n```\nvoid Change(int x)\n{\n    x = 100;\n}\nint a = 10;\nChange(a);\n```\n",
+      "answer": "a = 10<br>x is a copy of a<br>changes inside method do not affect original variable"
+    },
+    {
+      "id":"22",  
+      "question": "What is p1.Name after the call?\n```\nvoid Change(Person p)\n{\n    p.Name = \"Maria\";\n}\nPerson p1 = new Person();\np1.Name = \"Anna\";\nChange(p1);\n```\n",
+      "answer": "p1.Name = \"Maria\"<br>reference is copied, both variables point to same object, object s mutated."
+    },
+    {
+      "id":"23",  
+      "question": "What is p1.Name after the call?\n```\nvoid Change(Person p)\n{\n    p = new Person();\n    p.Name = \"Maria\";\n}\nPerson p1 = new Person();\np1.Name = \"Anna\";\nChange(p1);\n```\n",
+      "answer": "After the call : p1.Name == \"Anna\"<br><br>When you call: Change(p1); the reference is passed by value (copied):<br>p1 ──► Person(\"Anna\")<br>p (parameter) gets a COPY of that reference.<br><br>So inside the method:<br>p = new Person();<br>p.Name = \"Maria\";<br>You are creating a new object, changing the local parameter p, not touching p1.<br><br>C# passes the reference by value, so reassigning p inside the method does not affect p1."
+    },
+    {
+      "id":"24",  
+      "question": "What is pt.X after the call?\n```\nstruct Point\n{\n    public int X;\n    public int Y;\n}\n\nvoid Move(Point p)\n{\n    p.X = 100;\n}\n\nPoint pt = new Point();\npt.X = 10;\nMove(pt);\n```\n",
+      "answer": "pt.X = 10, structs are passed by value, method modifies only copy."
+    },
+    {
+      "id":"25",  
+      "question": "What is pt1.X and pt2.X?\n```\nPoint pt1 = new Point();\npt1.X = 10;\nPoint pt2 = pt1;\npt2.X = 99;\n```\n",
+      "answer": "pt1.X = 10<br>pt2.X = 99<br><br>Struct assignement creates a full copy with independent values."
+    },
+    {
+      "id":"26",  
+      "question": "What is a after the call?\n```\nvoid Change(string s)\n{\n    s = \"world\";\n}\n\nstring a = \"hello\";\nChange(a);\n```\n",
+      "answer": "a = \"hello\"<br>string is immutable, reassignement only changes local reference."
+    },
+    {
+      "id":"27",  
+      "question": "What is x after the call?\n```\nvoid Change(object o)\n{\n    o = 100;\n}\nint x = 10;\nChange(x);\n```\n",
+      "answer": "x = 10<br>x remains 10 because the boxed value is passed by value, and o = 100 only reassigns the local parameter, not the original variable."
+    },
+    {
+      "id":"28",  
+      "question": "What is: p1.Name, p2.Name?\n```\nPerson p1 = new Person();\nPerson p2 = p1;\np2 = new Person();\np2.Name = \"Maria\";\n```\n",
+      "answer": "p1.Name = null (or default)<br>p2.Name = 'Maria'<br>Reassigning a reference variable (p2 = new Person()) does not affect other references that previously pointed to the same object.<br>p1 stays on the original object, p2 is reassigned to a new object and modified independently."
+    },
+    {
+      "id":"29",  
+      "question": "When you pass a reference type into a method what is actually copied?<br>A) The object<br>B) The reference<br>C) Nothing<br>D) The heap memory",
+      "answer": "B) The reference"
+    },
+    {
+      "id":"30",  
+      "question": "Why can a method modify a reference type object but not a value type (without ref)?",
+      "answer": "A reference type can modify a shared object because both caller and callee hold references to the same heap object, while a value type is passed as a copy of the data, so modifications happen on an independent instance."
+    },
+    {
+      "id":"31",  
+      "question": "\n```\nPerson p = new Person();\n```\n",
+      "answer": "p → reference stored on the stack (if local variable)<br>new Person() → object stored on the heap<br>The variable is NOT the object — it stores a reference to it."
+    },
+    {
+      "id":"32",  
+      "question": "\n```\nclass Person\n{\n    public int Age;\n}\n Person p = new Person();\n p.Age = 30;\n```\n",
+      "answer": "Value types follow their container.<br>p is a reference on stack<br>Person object is on heap<br>Age (int) is stored inside the heap object"
+    },
+    {
+      "id":"33",  
+      "question": "\n```\nstruct Point\n{\n    public Person P;\n}\n Point pt = new Point();\n```\n",
+      "answer": "Value types can contain references, which point to heap objects.<br><br>pt (struct) is stored where it is declared (often stack)<br>P is a reference inside the struct<br>the Person object itself is on the heap"
+    },
+    {
+      "id":"34",  
+      "question": "\n```\nint[] arr = new int[3];\n```\n",
+      "answer": "Arrays are always heap objects, even for value types.<br><br>arr reference → stack (if local)<br>array object → heap<br>elements (int) → inside heap array"
+    },
+    {
+      "id":"35",  
+      "question": "\n```\nvoid Test(Person p)\n{\n    // p is a copy of reference\n}\nPerson p1 = new Person();\nTest(p1);\n```\n",
+      "answer": "New stack frame created for Test<br>p is a copy of reference<br>both references point to same heap object<br>Key point:<br>Each method call gets its own stack frame."
+    },
+    {
+      "id":"36",  
+      "question": "\n```\nvoid Test(Point p)\n{\n    p.X = 100;\n}\nPoint pt = new Point();\nTest(pt);\n```\n",
+      "answer": "pt copied into method stack frame<br>method works on copy<br>original pt unchanged<br>Key point:<br>Structs are copied into the callee’s stack frame."
+    },
+    {
+      "id":"37",  
+      "question": "\n```\nAction a;\n{\nvoid Test()\n{\n    int x = 10;\n    a = () => Console.WriteLine(x);}\n\n```\n",
+      "answer": "x is moved to the heap (closure object)<br>lambda captures x by reference (closure environment)<br>Key point:<br>Captured locals escape stack → become heap-managed."
+    },
+    {
+      "id":"38",  
+      "question": "\n```\nstring a = \"hello\";\nstring b = \"hello\";\n```\n",
+      "answer": "Both references often point to the same heap string object<br>String literals are interned by CLR."
+    },
+    {
+      "id":"39",  
+      "question": "\n```\nint x = 5;\nobject o = x;\n```\n",
+      "answer": "Boxing = heap allocation of value type.<br>x copied into a new heap object (boxed int)<br>o references boxed object"
+    },
+    {
+      "id":"40",  
+      "question": "\n```\nPerson Get()\n{\n    Person p = new Person();\n    return p;\n}\n```\n",
+      "answer": "Returning references does NOT return stack memory.<br>p reference is copied back to caller<br>object remains on heap<br>stack frame is destroyed, but heap object survives"
+    },
+    {
+      "id":"41",  
+      "question": "\n```\nstruct Wrapper\n{\n        public Person P;\n}\nWrapper w = new Wrapper();\n```\n",
+      "answer": "w is on stack (or inline in container)<br>P reference points to heap object<br>struct does NOT contain object, only reference"
+    },
+    {
+      "id":"42",
+      "question":"True or false?<br>All objects are stored on heap in C#",
+      "answer":"False.<br>Reference type objects → heap<br>Value types → wherever they are declared: stack (locals), heap (inside objects / arrays / closures)"
+    },
+    {
+      "id":"43",
+      "question":"What is printed and why?\n```\nvoid Update(Person p)\n{\n    p = new Person();\n    p.Name = \"New\";\n}\nPerson person = new Person();\nperson.Name = \"Old\";\nUpdate(person);\nConsole.WriteLine(person.Name);\n```\n",
+      "answer":"It prints 'old'. When you call Update(person); the reference stored in person is copied into the parameter p.<br>person ──► Person(Name = \"Old\")<br>p      ──► Person(Name = \"Old\")<br>Then inside Update p is changed to point to a new object. When the method returns, p disappears because it was a local parameter in the method's stack frame. The original person variable still points to the original object<br>C# passes the reference by value. Reassigning the parameter (p = new Person()) does not change the caller's variable (person)."
+    },
+    {
+      "id":"44",
+      "question":"Does this compile? If yes, what is the final value of list[0].X?\n```\nstruct Point\n{\n    public int X;\n}\nList<Point> list = new List<Point>();\nPoint p = new Point();\np.X = 5;\nlist.Add(p);\nlist[0].X = 10;\n```\n",
+      "answer":"No, this does not compile.<br>list[0].X = 10;<br>produces a compiler error similar to: Cannot modify the return value of List<Point>.this[int] because it is not a variable."
+    },
+    {
+      "id":"45",
+      "question":"What happens in memory and why is this considered inefficient?\n```\nArrayList list = new ArrayList();\nint x = 5;\nlist.Add(x);\nint y = (int)list[0];\n```\n",
+      "answer":"ArrayList stores items as object, not as int.,<br>Since x is an int (value type) and ArrayList expects an object, the CLR boxes x.<br>The value 5 is copied into a new heap object, and a reference to that object is stored in the ArrayList.<br>The CLR:<br>Retrieves the reference from the ArrayList<br>Verifies it contains a boxed int<br>Copies the value out of the boxed object into y<br><br>x is boxed when added to the ArrayList, creating a heap object that stores a copy of 5. When reading it back, the value is unboxed into y. This is inefficient because it causes heap allocations, extra copying, runtime type checks, and additional garbage collection work."
+    },
+    {
+      "id":"46",
+      "question":"What is the output and why?\n```\nList<Action> actions = new List<Action>();\nfor (int i = 0; i < 3; i++)\n{\n    actions.Add(() => Console.WriteLine(i));\n}\nforeach (var a in actions)\n    a();\n```\n",
+      "answer":"Output:<br>3<br>3<br>3<br><br>The lambda: () => Console.WriteLine(i) does not capture the value of i at each iteration. It captures the variable i itself. The compiler creates a hidden closure object that contains i, and all three lambdas reference the same captured variable."
+    },
+    {
+      "id":"47",
+      "question":"True or false output? Explain CLR behavior.\n```\nstring a = \"hello\";\nstring b = \"he\" + \"llo\";\nConsole.WriteLine(object.ReferenceEquals(a, b));\n```\n",
+      "answer":"Output: True<br>String literals and compile-time constant string expressions are automatically interned by the CLR, causing identical literals to share the same string object."
+    },
+    {
+      "id":"48",
+      "question":"Does this compile? If not, why? If yes, what happens?\n```\nstruct S { public int X; }\nList<S> list = new List<S>();\nS s = new S();\ns.X = 1;\nlist.Add(s);\nlist[0].X = 5;\n```\n",
+      "answer":"No, it does not compile. You get an error like: Cannot modify the return value of List<S>.this[int] because it is not a variable. Indexing a List<struct> returns a copy, and C# prevents modifying fields on that temporary value."
+    },
+    {
+      "id":"49",
+      "question":"Where is a allocated, and what happens to it after return?\n```\nclass A\n{\n    public int X;\n}\nA Get()\n{\n    A a = new A();\n    a.X = 10;\n    return a;\n}\n```\n",
+      "answer":"A is a class (reference type), so: The object is allocated on the managed heap, The local variable a is stored in the method’s stack frame and holds a reference. Only the reference is returned, not the object. So the caller receives a copy of the reference: callerA ──► 0xA1 The object remains unchanged.<br>Final answer<br>Allocation: a is a reference variable on the stack; the A object is allocated on the heap.<br>After return: the stack frame is destroyed, but the heap object remains alive because its reference is returned to the caller.<br>Lifetime: the object persists until no references point to it (then GC collects it)."
+    },
+    {
+      "id":"50",
+      "question":"What is stored in o and why?\n```\nint? x = null;\nobject o = x;\n```\n",
+      "answer":"o contains null.<br>No object is created<br>Because Nullable<T> with HasValue == false boxes to null rather than a heap object<br><br>When a null nullable struct is boxed, the result is null reference, not a boxed struct instance."
+    },
+    {
+      "id":"51",
+      "question":"What is the state of a and b?\n```\nPerson a = new Person();\nPerson b = a;\nb = new Person();\nb.Name = \"New\";\n```\n",
+      "answer":"After execution:<br>a.Name = null (default value)<br>b.Name = \"New\"<br><br>Why:<br>b = a → both point to the same object<br>b = new Person() → b is redirected to a new object<br>Now they are independent references so:<br>a → Person #1 (Name = null)<br>b → Person #2 (Name = \"New\")"
+    },
+    {
+      "id":"52",
+      "question":"Describe the heap structure after execution.\n```\nclass Node\n{\n    public int Value;\n    public Node Next;\n}\nNode n1 = new Node();\nNode n2 = n1;\nn2.Next = new Node();\n```\n",
+      "answer":"n1 and n2 are aliases (same object)<br>Only one mutation happens (Next field on A)<br>That mutation is visible through both variables<br><br>Two references point to the same first node; setting n2.Next attaches a second node to that shared object, forming a 2-node linked structure."
+    },
+    {
+      "id":"53",
+      "question":"When do x and y cease to exist?\n```\nvoid Foo()\n{\n    int x = 10;\n    Bar();\n}\n\nvoid Bar()\n{\n    int y = 20;\n}\n```\n",
+      "answer":"x ceases to exist when Foo() returns<br>y ceases to exist when Bar() returns<br>because both are stored in their respective stack frames."
+    },
+    {
+      "id":"54",
+      "question":"Is the object on stack or heap? What type is actually created?\n```\nobject o = new int[3];\n```\n",
+      "answer":"The runtime creates:<br>An int[] (array of integers)<br>So the real type is System.Int32[]<br>The object (new int[3]) is on the heap, arrays in C# are reference types, and all array instances are heap-allocated.<br>is of type object, so it stores a reference to the array.<br><br><br>A heap-allocated int[] is created, and o stores a reference to it; no boxing occurs because arrays are reference types."
+    },
+    {
+      "id":"55",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    },
+    {
+      "id":"",
+      "question":"",
+      "answer":""
+    }
+  ]
+}

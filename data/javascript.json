@@ -1,0 +1,12 @@
+{
+  "subject": "JavaScript",
+  "description": "JS topics from basics to advanced",
+  "decks": [
+    {
+      "title": "JS fundamentals",
+      "description": "Core JavaScript concepts",
+      "dataFile": "data/Javascript/jsFundamentals.json",
+      "cards": []
+    }
+  ]
+}
