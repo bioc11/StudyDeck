@@ -1,5 +1,6 @@
 let subjects = [];
 let currentSubject = null;
+let currentGroupPath = [];
 let currentDeck = null;
 let isStudyMode = false;
 const studyBtn = document.getElementById("studyModeBtn");
@@ -11,7 +12,8 @@ async function loadSubjects() {
     const subjectFiles = [
         "data/csharp.json",
         "data/javascript.json",
-        "data/grokkingAlgorithms.json"
+        "data/grokkingAlgorithms.json",
+        "data/EAP.json"
     ];
 
     try {
@@ -37,10 +39,12 @@ function renderSubjectList() {
     const main = document.getElementById("cardsContainer");
     const search = document.getElementById("searchBox");
     const back = document.getElementById("backBtn");
+    const home = document.getElementById("homeBtn");
     const title = document.getElementById("headerTitle");
 
     search.style.display = "none";
     back.style.display = "none";
+    home.style.display = "none";
     studyBtn.style.display = "none";
     title.textContent = "Study Deck";
 
@@ -61,14 +65,86 @@ function renderSubjectList() {
 // -----------------------------
 function openSubject(index) {
     currentSubject = subjects[index];
+    currentGroupPath = [];
 
     const title = document.getElementById("headerTitle");
     const back = document.getElementById("backBtn");
+    const home = document.getElementById("homeBtn");
 
     title.textContent = currentSubject.subject;
     back.style.display = "inline-block";
+    home.style.display = "inline-block";
 
-    renderDeckList(currentSubject.decks);
+    renderCurrentLevel();
+}
+
+function renderCurrentLevel() {
+    const groups = getCurrentGroups();
+    if (groups.length > 0) {
+        renderGroupList(groups);
+        return;
+    }
+
+    renderDeckList(getCurrentDecks());
+}
+
+function getCurrentGroups() {
+    if (!currentSubject) return [];
+
+    if (currentGroupPath.length === 0) {
+        return currentSubject.groups || [];
+    }
+
+    const activeGroup = currentGroupPath[currentGroupPath.length - 1];
+    return activeGroup.groups || [];
+}
+
+function getCurrentDecks() {
+    if (!currentSubject) return [];
+
+    if (currentGroupPath.length === 0) {
+        return currentSubject.decks || [];
+    }
+
+    const activeGroup = currentGroupPath[currentGroupPath.length - 1];
+    return activeGroup.decks || [];
+}
+
+function getCurrentTitle() {
+    if (!currentSubject) return "Study Deck";
+
+    const chain = [currentSubject.subject, ...currentGroupPath.map(group => group.title)];
+    return chain.join(" > ");
+}
+
+function openGroup(index) {
+    const groups = getCurrentGroups();
+    const selectedGroup = groups[index];
+    if (!selectedGroup) return;
+
+    currentGroupPath.push(selectedGroup);
+    renderCurrentLevel();
+}
+
+function renderGroupList(groups) {
+    const main = document.getElementById("cardsContainer");
+    const search = document.getElementById("searchBox");
+    const title = document.getElementById("headerTitle");
+
+    search.style.display = "none";
+    studyBtn.style.display = "none";
+    title.textContent = getCurrentTitle();
+
+    main.innerHTML = `
+        <div class="deck-list">
+            ${groups.map((group, i) => `
+                <div class="deck-card" onclick="openGroup(${i})">
+                    <h2>${group.title}</h2>
+                    <p>${group.description || ""}</p>
+                </div>
+            `).join("")}
+        </div>
+    `;
 }
 
 // -----------------------------
@@ -81,7 +157,7 @@ function renderDeckList(decks) {
 
     search.style.display = "none";
     studyBtn.style.display = "none";
-    title.textContent = currentSubject.subject;
+    title.textContent = getCurrentTitle();
 
     main.innerHTML = `
         <div class="deck-list">
@@ -99,9 +175,11 @@ function renderDeckList(decks) {
 // OPEN A DECK
 // -----------------------------
 async function openDeck(index) {
-    currentDeck = currentSubject.decks[index];
+    const decks = getCurrentDecks();
+    currentDeck = decks[index];
+    if (!currentDeck) return;
 
-    if (currentDeck.dataFile && currentDeck.cards.length === 0) {
+    if (currentDeck.dataFile && (!currentDeck.cards || currentDeck.cards.length === 0)) {
         const response = await fetch(currentDeck.dataFile);
         const data = await response.json();
         currentDeck.cards = data.cards.filter(c => c.question);
@@ -111,7 +189,7 @@ async function openDeck(index) {
     const search = document.getElementById("searchBox");
     const back = document.getElementById("backBtn");
 
-    title.textContent = currentDeck.title;
+    title.textContent = getCurrentTitle() + " > " + currentDeck.title;
     search.value = "";
     search.style.display = "inline-block";
     back.style.display = "inline-block";
@@ -170,15 +248,33 @@ document.getElementById("backBtn").addEventListener("click", () => {
     if (currentDeck) {
         if (isStudyMode) exitStudyMode();
         currentDeck = null;
-        renderDeckList(currentSubject.decks);
+        renderCurrentLevel();
+        return;
+    }
+
+    if (currentGroupPath.length > 0) {
+        currentGroupPath.pop();
+        renderCurrentLevel();
         return;
     }
 
     if (currentSubject) {
         currentSubject = null;
+        currentGroupPath = [];
         renderSubjectList();
         return;
     }
+});
+
+document.getElementById("homeBtn").addEventListener("click", () => {
+    if (currentDeck && isStudyMode) {
+        exitStudyMode();
+    }
+
+    currentDeck = null;
+    currentSubject = null;
+    currentGroupPath = [];
+    renderSubjectList();
 });
 
 // -----------------------------

@@ -82,6 +82,7 @@ header h1 {
 
 #themeToggle,
 #backBtn,
+#homeBtn,
 #studyModeBtn {
     padding: 8px 12px;
     font-size: 18px;
@@ -93,8 +94,14 @@ header h1 {
 }
 
 #themeToggle:hover,
-#backBtn:hover {
+#backBtn:hover,
+#homeBtn:hover {
     opacity: 0.85;
+}
+
+.header-left {
+    display: flex;
+    gap: 8px;
 }
 
 /* ---------------------
@@ -196,6 +203,29 @@ header h1 {
     padding: 8px;
     border-radius: 6px;
     overflow-x: auto;
+}
+
+.card .answer img,
+.card .answer svg,
+.card .answer object,
+.card .answer iframe {
+    display: block;
+    max-width: 100%;
+    margin: 12px auto;
+    border-radius: 8px;
+}
+
+.card .answer object,
+.card .answer iframe {
+    width: 100%;
+    min-height: 420px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: white;
+}
+
+.dark .card .answer object,
+.dark .card .answer iframe {
+    background: #fff;
 }
 
 .dark .card pre {
