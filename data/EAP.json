@@ -35,6 +35,12 @@
           "description": "Εγγραφές, πλειάδες, αλφαριθμητικά, λίστες, σύνολα, λεξικά, ακολουθίες",
           "dataFile": "data/EAP/PlhPro/PlhProCh5.json",
           "cards": []
+        },
+        {
+          "title": "Python — Σετ 1: Βασικές ασκήσεις",
+          "description": "Βασικές ασκήσεις σε Python: μετατροπές, εμβαδά, μέσος όρος",
+          "dataFile": "data/EAP/PlhPro/PlhProPythonSet1.json",
+          "cards": []
         }
       ]
     }
